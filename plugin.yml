@@ -1,0 +1,40 @@
+name: FlagBattle
+version: 0.0.1
+main: flagbattle.plugin.FlagBattle
+commands:
+  startgame:
+    description: Starting Game.
+    usage: /<command>
+    default: true
+  stopgame:
+    description: Stoping or Quitting Game.
+    usage: /<command>
+    default: false
+  maketeam:
+    description: Making Team.
+    usage: /<command>
+    default: true
+  removeteam:
+    description: Removing Team.
+    usage: /<command>
+    default: false
+  leadteam:
+    description: To Determine Team Leader.
+    usage: /<command>
+    default: false
+  addteammember:
+    description: Adding Team Member.
+    usage: /<command>
+    default: false
+  rejectteammember:
+    description: Removing Team Member.
+    usage: /<command>
+    default: false
+  listteam:
+    description: Listing Teams.
+    usage: /<command>
+    default: false
+  statusteam:
+    description: Listing Team Member.
+    usage: /<command>
+    default: false
