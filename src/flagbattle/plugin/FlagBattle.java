@@ -1,9 +1,8 @@
 package flagbattle.plugin;
 
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class FlagBattle extends JavaPlugin implements CommandExecutor {
+public class FlagBattle extends JavaPlugin {
 
 	@Override
 	public void onDisable() {

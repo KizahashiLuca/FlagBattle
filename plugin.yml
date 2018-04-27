@@ -12,8 +12,10 @@ commands:
     default: false
   maketeam:
     description: Making Team.
-    usage: /<command>
+    usage: /<command> <TeamName> [player]
     default: true
+    permission: flagbattle.maketeam
+    permission-message: You may not have <permission>.
   removeteam:
     description: Removing Team.
     usage: /<command>
