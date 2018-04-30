@@ -31,7 +31,7 @@ public class RejectTeamMemberCommand implements CommandExecutor {
 
 		// パラメタ長の検証
 		if (args.length != 2) {
-			player.sendMessage(ChatColor.RED + "コマンドの後にチーム名を入力. \nその後にプレイヤー名を入力");
+			player.sendMessage(ChatColor.RED + "コマンドの後にチーム名を入力. その後にプレイヤー名を入力. ");
 			return false;
 		}
 
@@ -44,19 +44,19 @@ public class RejectTeamMemberCommand implements CommandExecutor {
 		// メンバー除去
 		boolean flag_target=false;
 		if (team.getEntries().size() == 0) {
-			player.sendMessage(ChatColor.YELLOW + args[0] + "チームにメンバーが存在しません. ");
+			player.sendMessage(team.getColor() + args[0] + ChatColor.YELLOW + "チームにメンバーが存在しません. ");
 			return false;
 		}
 		for (String pl : team.getEntries()) {
 			if (pl.equals(args[1])) {
 				team.removeEntry(args[1]);
-				player.sendMessage(ChatColor.GREEN + args[1] + "さんを" + args[0] + "チームから削除しました. ");
+				player.sendMessage(ChatColor.WHITE + args[1] + "さんを" + team.getColor() + args[0] + ChatColor.WHITE + "チームから削除しました. ");
 				flag_target=true;
 				break;
 			}
 		}
 		if (!flag_target) {
-			player.sendMessage(ChatColor.YELLOW + args[1] + "さんは" + args[0] + "チームに存在しません. ");
+			player.sendMessage(ChatColor.YELLOW + args[1] + "さんは" + team.getColor() + args[0] + ChatColor.WHITE + "チームに存在しません. ");
 		}
 
 		return true;

@@ -1,8 +1,16 @@
 package flagbattle.plugin;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Scoreboard;
+
+import net.md_5.bungee.api.ChatColor;
 
 public class FlagBattle extends JavaPlugin {
+
+	private Scoreboard s;
 
 	@Override
 	public void onDisable() {
@@ -25,6 +33,16 @@ public class FlagBattle extends JavaPlugin {
 		getCommand("listteam").setExecutor(new ListTeamCommand());
 		getCommand("statusteam").setExecutor(new StatusTeamCommand());
 
+		s = Bukkit.getScoreboardManager().getMainScoreboard();
+		registerHealthBar();
 	}
 
+	public void registerHealthBar() {
+		if (s.getObjective("health") != null) {
+			s.getObjective("health").unregister();
+		}
+		Objective o = s.registerNewObjective("health", "health");
+		o.setDisplayName(ChatColor.RED + "♥");
+		o.setDisplaySlot(DisplaySlot.BELOW_NAME);
+	}
 }

@@ -51,7 +51,7 @@ public class StatusTeamCommand implements CommandExecutor {
 		if (team == null) {
 			player.sendMessage(ChatColor.YELLOW + "指定した" + args[0] + "チームは存在しません.");
 		} else {
-			player.sendMessage(ChatColor.GREEN + args[0] + "チーム メンバーリスト");
+			player.sendMessage(team.getColor() + args[0] + ChatColor.WHITE + "チーム メンバーリスト");
 			if (team.getEntries().size() == 0) {
 				player.sendMessage(ChatColor.YELLOW + "   チームにメンバーが存在しません. ");
 				return true;

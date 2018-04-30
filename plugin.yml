@@ -4,39 +4,39 @@ main: flagbattle.plugin.FlagBattle
 commands:
   startgame:
     description: Starting Game.
-    usage: /<command>
-    default: true
+    usage:   /<command>
+    default: false
   stopgame:
     description: Stoping or Quitting Game.
-    usage: /<command>
+    usage:   /<command>
     default: false
   maketeam:
     description: Making Team.
-    usage: /<command> <TeamName> [player]
-    default: true
+    usage:   /<command> <TeamName> [player1] [player2] ...
+    default: false
     permission: flagbattle.maketeam
     permission-message: You may not have <permission>.
   removeteam:
     description: Removing Team.
-    usage: /<command>
+    usage:   /<command>
     default: false
   leadteam:
     description: To Determine Team Leader.
-    usage: /<command>
+    usage:   /<command> <player>
     default: false
   addteammember:
     description: Adding Team Member.
-    usage: /<command>
+    usage:   /<command> <player>
     default: false
   rejectteammember:
     description: Removing Team Member.
-    usage: /<command>
+    usage:   /<command> <player>
     default: false
   listteam:
     description: Listing Teams.
-    usage: /<command>
+    usage:   /<command>
     default: false
   statusteam:
     description: Listing Team Member.
-    usage: /<command>
+    usage:   /<command> <TeamName>
     default: false

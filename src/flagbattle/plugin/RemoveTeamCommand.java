@@ -31,7 +31,7 @@ public class RemoveTeamCommand implements CommandExecutor {
 
 		// パラメタ長の検証
 		if (args.length != 1) {
-			player.sendMessage(ChatColor.RED + "コマンドの後にチーム名を入力. \n必要ならばその後にプレイヤー名を連ねてください.");
+			player.sendMessage(ChatColor.RED + "コマンドの後にチーム名を入力. ");
 			return false;
 		}
 
@@ -52,7 +52,7 @@ public class RemoveTeamCommand implements CommandExecutor {
 			player.sendMessage(ChatColor.YELLOW + "指定した" + args[0] + "チームは存在しません.");
 		} else {
 			team.unregister();
-			player.sendMessage(ChatColor.GREEN + args[0] + "チームを削除しました. ");
+			player.sendMessage(ChatColor.WHITE + args[0] + "チームを削除しました. ");
 		}
 
 		return true;

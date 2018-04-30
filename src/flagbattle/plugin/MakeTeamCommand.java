@@ -4,12 +4,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 
 import net.md_5.bungee.api.ChatColor;
+import net.minecraft.server.v1_12_R1.IChatBaseComponent;
+import net.minecraft.server.v1_12_R1.IChatBaseComponent.ChatSerializer;
+import net.minecraft.server.v1_12_R1.PacketPlayOutChat;
 
 public class MakeTeamCommand implements CommandExecutor {
 
@@ -31,7 +35,7 @@ public class MakeTeamCommand implements CommandExecutor {
 
 		// パラメタ長の検証
 		if (args.length < 1) {
-			player.sendMessage(ChatColor.RED + "コマンドの後にチーム名を入力. \n必要ならばその後にプレイヤー名を連ねてください.");
+			player.sendMessage(ChatColor.RED + "コマンドの後にチーム名を入力. その後チーム色を指定. 必要ならばその後にプレイヤー名を連ねてください. ");
 			return false;
 		}
 
@@ -45,44 +49,56 @@ public class MakeTeamCommand implements CommandExecutor {
 		for (Team tmp : board.getTeams()) {
 			if (tmp.getName().equals(teamname)) {
 				team = tmp;
-				player.sendMessage(ChatColor.RED + args[0] + "チームは存在するため、チームの新規作成は行いませんでした.");
+				player.sendMessage(team.getColor() + args[0] + ChatColor.RED + "チームは存在するため、チームの新規作成は行いませんでした. ");
 				break;
 			}
 		}
+
 		if (team == null) {
 			team = board.registerNewTeam(teamname);
 			team.setAllowFriendlyFire(true);
 			team.setCanSeeFriendlyInvisibles(true);
-			player.sendMessage(ChatColor.GREEN + args[0] + "チームを作成しました. ");
+			player.sendMessage(ChatColor.WHITE + "チームを作成しました. ");
 		}
 
-		if (args.length == 1) {
-			return true;
-		}
+		if (args.length != 1) {
+			// プレイヤーをチームに加入
+			for (int i=1; i<args.length; i++) {
+				Player target = Bukkit.getPlayerExact(args[i]);
+				boolean flag_target = false;
+				for (Team foo : board.getTeams()) {
+					if (foo.hasEntry(args[i])) {
+						player.sendMessage("   " + ChatColor.YELLOW + args[i] + "さんは既に" + foo.getColor() + foo.getName() + ChatColor.YELLOW + "チームに加入しています. チームへの加入を見送ります. ");
+						flag_target = true;
+						break;
+					}
+				}
+				if (flag_target) {
+					continue;
+				}
 
-		// プレイヤーをチームに加入
-		for (int i=1; i<args.length; i++) {
-			Player target = Bukkit.getPlayerExact(args[i]);
-			boolean flag_target = false;
-			for (Team foo : board.getTeams()) {
-				if (foo.hasEntry(args[i])) {
-					player.sendMessage(ChatColor.YELLOW + args[i] + "さんは既に" + foo.getName() + "チームに加入しています. \n" + args[0] + "チームへの加入を見送ります. ");
-					flag_target = true;
-					break;
+				if (target==null) {
+					player.sendMessage("   " + ChatColor.YELLOW + args[i] + "さんを認識できませんでした.");
+				} else {
+					team.addEntry(args[i]);
+					player.sendMessage("   " + ChatColor.WHITE + args[i] + "さんを加入させました. ");
 				}
 			}
-			if (flag_target) {
-				continue;
-			}
-
-			if (target==null) {
-				player.sendMessage(ChatColor.YELLOW + args[i] + "さんを認識できませんでした.");
-			} else {
-				team.addEntry(args[i]);
-				player.sendMessage(ChatColor.GREEN + args[i] + "さんを" + args[0] + "チームに加入させました. ");
-			}
 		}
 
+		// チーム色を指定
+		if (team.getColor().isColor()) {
+			return true;
+		}
+		IChatBaseComponent teamcolor = ChatSerializer
+				.a("{\"text\":\"チームカラーを指定してください.\n\", \"color\":\"green\", \"extra\":["
+						+ "{\"text\":\"<赤>\", \"color\":\"red\", \"clickEvent\":{\"action\":\"run_command\", \"value\":\"/scoreboard teams option " + teamname + " color red\"}}, "
+						+ "{\"text\":\"<青>\", \"color\":\"blue\", \"clickEvent\":{\"action\":\"run_command\", \"value\":\"/scoreboard teams option " + teamname + " color blue\"}}, "
+						+ "{\"text\":\"<黄>\", \"color\":\"yellow\", \"clickEvent\":{\"action\":\"run_command\", \"value\":\"/scoreboard teams option " + teamname + " color yellow\"}}, "
+						+ "{\"text\":\"<緑>\", \"color\":\"green\", \"clickEvent\":{\"action\":\"run_command\", \"value\":\"/scoreboard teams option " + teamname + " color green\"}} "
+						+ "]}");
+		PacketPlayOutChat packet = new PacketPlayOutChat(teamcolor);
+		((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
 		return true;
 	}
 

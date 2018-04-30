@@ -41,11 +41,11 @@ public class ListTeamCommand implements CommandExecutor {
 
 		if (board.getTeams().size() == 0) {
 			player.sendMessage(ChatColor.YELLOW + "チームが存在しません. ");
-			return false;
+			return true;
 		}
-		player.sendMessage(ChatColor.GREEN + "チーム リスト");
+		player.sendMessage(ChatColor.WHITE + "チーム リスト");
 		for (Team tmp : board.getTeams()) {
-			player.sendMessage("   " + tmp.getName() + " : " + tmp.getEntries().size() + "人");
+			player.sendMessage("   " + tmp.getColor() + tmp.getName() + ChatColor.WHITE + " : " + tmp.getEntries().size() + "人");
 		}
 
 		return true;
