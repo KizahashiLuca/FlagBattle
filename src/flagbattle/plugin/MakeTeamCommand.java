@@ -46,10 +46,14 @@ public class MakeTeamCommand implements CommandExecutor {
 		Team team = null;
 
 		// もしチームがすでに存在したら作成しない
+		if (board.getTeams().size()>1) {
+			player.sendMessage(ChatColor.RED + "チームが2つ存在しているため, チームの新規作成はできません.");
+			return true;
+		}
 		for (Team tmp : board.getTeams()) {
 			if (tmp.getName().equals(teamname)) {
 				team = tmp;
-				player.sendMessage(team.getColor() + args[0] + ChatColor.RED + "チームは存在するため、チームの新規作成は行いませんでした. ");
+				player.sendMessage(team.getColor() + args[0] + ChatColor.RED + "チームは存在するため, チームの新規作成は行いませんでした. ");
 				break;
 			}
 		}
